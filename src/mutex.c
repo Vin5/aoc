@@ -102,3 +102,13 @@ void mutex_destroy(mutex_t** mutex_ptr) {
 #else
 #error Platform is not supported
 #endif
+
+void* mutex_native(mutex_t* self) {
+    assert(self);
+    return &self->mutex;
+}
+
+bool mutex_is_locked(mutex_t* self) {
+    assert(self);
+    return self->locked;
+}

@@ -20,6 +20,9 @@ void mutex_unlock(mutex_t* mutex);
 // deallocate resources
 void mutex_destroy(mutex_t** mutex);
 
+// get a pointer to platform specific underlying mutex primitive
+void* mutex_native(mutex_t* mutex);
+
 #ifdef __cplusplus
 }
 #endif
