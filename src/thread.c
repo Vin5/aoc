@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h> // for memset
 
 #include "thread.h"
 #include "config.h"
@@ -45,7 +46,8 @@ void thread_join(thread_t* self){
 }
 
 static void thread_finalize(thread_t* self)  {
-    CloseHandle((HANDLE)self->tid);
+    if(self->tid)
+        CloseHandle((HANDLE)self->tid);
 }
 #else
 
@@ -79,6 +81,8 @@ thread_t* thread_new(thread_function_t function, void* params) {
     if(NULL == self){
         return NULL;
     }
+    memset(self, 0, sizeof(thread_t));
+
     self->function = function;
     self->params = params;
 

@@ -11,7 +11,7 @@ typedef void(*active_function_t)(void);
 
 active_t* active_new(void);
 
-void active_send(active_function_t function);
+void active_send(active_t* object, active_function_t function);
 
 void active_destroy(active_t** object);
 
