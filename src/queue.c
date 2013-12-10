@@ -39,7 +39,6 @@ static void queue_node_destroy(queue_node_t** node){
     }
 }
 
-
 queue_t* queue_new(void) {
     queue_t* self = (queue_t*) malloc(sizeof(queue_t));
     if(!self)
