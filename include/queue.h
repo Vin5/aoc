@@ -26,9 +26,6 @@ void* queue_pull(queue_t* queue);
 // get size of the queue
 size_t queue_size(queue_t* queue);
 
-// set queue in autofree mode, elements in the queue will be freed on 'queue_destroy' call
-void queue_autofree(queue_t* queue);
-
 
 #ifdef __cplusplus
 }

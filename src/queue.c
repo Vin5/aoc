@@ -12,7 +12,6 @@ struct _queue_t {
     queue_node_t* head;
     queue_node_t* tail;
     size_t size;
-    bool autofree;
 };
 
 
@@ -30,12 +29,10 @@ static queue_node_t* queue_node_new(void* value){
     return node;
 }
 
-static void queue_node_destroy(queue_node_t** node, bool autofree){
+static void queue_node_destroy(queue_node_t** node){
     assert(node);
     // queue doesn't own elements, so we need to deallocate only internal nodes
     if(*node) {
-        if(autofree)
-            free(*node->value);
         free(*node);
         *node = NULL;
     }
@@ -50,7 +47,6 @@ queue_t* queue_new(void) {
     self->head = NULL;
     self->tail = NULL;
     self->size = 0;
-    self->autofree = false;
 
     return self;
 }
@@ -64,7 +60,7 @@ void queue_destroy(queue_t** queue_ptr) {
         node = self->tail;
         while(node) {
             next=node->next;
-            queue_node_destroy(&node, self->autofree);
+            queue_node_destroy(&node);
             node = next;
         }
         *queue_ptr = NULL;
@@ -96,10 +92,32 @@ void queue_push(queue_t* self, void* element) {
     }
 }
 
-
-void queue_autofree(queue_t* self) {
+void* queue_pull(queue_t* self) {
     assert(self);
 
-    self->autofree = true;
+    void* value = NULL;
+
+    if(queue_is_empty(self)) {
+        return NULL;
+    }
+
+    queue_node_t* node = self->head;
+    if(self->head == self->tail) {
+        self->tail = self->head = NULL;
+    }
+    else {
+        self->head = node->previous;
+        self->head->next = NULL;
+    }
+
+    value = node->value;
+    queue_node_destroy(&node);
+    self->size--;
+
+    return value;
 }
 
+size_t queue_size(queue_t* self) {
+    assert(self);
+    return self->size;
+}
