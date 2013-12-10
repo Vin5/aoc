@@ -29,7 +29,7 @@ void* blocking_queue_try_pull(blocking_queue_t* queue);
 
 
 // frees allocated resources
-void blocking_queue_destroy(blocking_queue_t* queue);
+void blocking_queue_destroy(blocking_queue_t** queue);
 
 
 #ifdef __cplusplus
