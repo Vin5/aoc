@@ -60,13 +60,13 @@ static void* run(void* param){
 
 void thread_start(thread_t* self){
     assert(self);
-    int rc = pthread_create(&self->tid, 0, run, (void*)self);
+    int rc = pthread_create(&self->tid, NULL, run, (void*)self);
     assert(0 == rc);
 }
 
 void thread_join(thread_t* self){
     assert(self);
-    int rc = pthread_join(self->tid, 0);
+    int rc = pthread_join(self->tid, NULL);
     assert(0 == rc);
 }
 

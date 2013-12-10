@@ -121,8 +121,6 @@ void condition_wait(condition_t* self) {
 
 void condition_notify(condition_t* self) {
     assert(self);
-    assert(mutex_is_locked(self->mutex));
-
     int rc = pthread_cond_signal(&self->condition);
     assert(0 == rc);
 }

@@ -18,6 +18,6 @@ static void reverser(void) {
 int main(int argc, char* argv[]) {
     active_t* object = active_new();
     active_send(object, reverser);
-    active_destroy(object);
+    active_destroy(&object);
     return strcmp(message, "!dlrow olleH");
 }

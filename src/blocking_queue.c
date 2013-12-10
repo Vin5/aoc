@@ -35,10 +35,10 @@ void blocking_queue_push(blocking_queue_t* self, void* value) {
     assert(self);
     assert(value);
 
-    condition_acquire(self->condition);
+    //condition_acquire(self->condition);
     queue_push(self->queue, value);
     condition_notify(self->condition);
-    condition_release(self->condition);
+    //condition_release(self->condition);
 }
 
 void* blocking_queue_pull(blocking_queue_t* self) {
