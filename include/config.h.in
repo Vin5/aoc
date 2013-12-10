@@ -1,0 +1,14 @@
+#ifndef AOC_CONFIG_H
+#define AOC_CONFIG_H
+
+#cmakedefine HAVE_STDBOOL
+
+#ifdef HAVE_STDBOOL
+    #include <stdbool.h>
+#else
+    #define bool char
+    #define true  1
+    #define false 0
+#endif
+
+#endif // AOC_CONFIG_H

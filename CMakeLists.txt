@@ -7,12 +7,17 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-
-
+# specify source directories
 set(INCLUDE_DIRS 
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(SOURCE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+# Check platform features
+include(CheckIncludeFiles)
+check_include_files(stdbool.h HAVE_STDBOOL)
+configure_file(${INCLUDE_DIRS}/config.h.in
+               ${INCLUDE_DIRS}/config.h)
 
 if(UNIX) 
     set(LIBS pthread)
