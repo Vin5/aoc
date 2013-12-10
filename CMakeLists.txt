@@ -18,12 +18,14 @@ if(UNIX)
     set(LIBS pthread)
 endif()
 
+file(GLOB INCLUDES
+     ${INCLUDE_DIRS}/*h)
 file(GLOB SOURCES
      ${SOURCE_DIR}/*.c)
 
 
 include_directories(${INCLUDE_DIRS})
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} SHARED ${SOURCES} ${INCLUDES})
 
 if(LIBS) 
     target_link_libraries(${PROJECT_NAME} ${LIBS})
