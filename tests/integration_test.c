@@ -9,9 +9,9 @@ static void reverser(void) {
     int i = 0;
     char temp;
     for(; i < len / 2; i++) {
-	temp = message[len - i - 1];
-	message[len - i - 1] = message[i];
-	message[i] = temp;
+        temp = message[len - i - 1];
+        message[len - i - 1] = message[i];
+        message[i] = temp;
     }
 }
 
