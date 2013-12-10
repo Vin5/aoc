@@ -1,4 +1,5 @@
 #include "queue.h"
+#include <stdlib.h>
 
 typedef struct _queue_node_t queue_node_t;
 
@@ -55,7 +56,10 @@ queue_t* queue_new(void) {
 void queue_destroy(queue_t** queue_ptr) {
     assert(queue_ptr);
 
+    queue_node_t* node = NULL;
+    queue_node_t* next = NULL;
     queue_t* self = *queue_ptr;
+
     if(self) {
         node = self->tail;
         while(node) {

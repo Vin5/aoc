@@ -1,6 +1,9 @@
 #ifndef AOC_QUEUE_H
 #define AOC_QUEUE_H
 
+#include "boolean.h"
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
