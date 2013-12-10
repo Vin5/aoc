@@ -1,6 +1,9 @@
 #ifndef AOC_CONDITION_H
 #define AOC_CONDITION_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // Condition varable class struct
 typedef struct _condition_t condition_t;
@@ -22,5 +25,9 @@ void condition_wait(condition_t* condition);
 
 // notify a waiter he can awake and acquire condition variable again
 void condition_notify(condition_t* condition);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // AOC_CONDITION_H
