@@ -15,10 +15,15 @@ set(SOURCE_DIR
 
 # Check platform features
 include(CheckIncludeFiles)
+
 check_include_files(stdbool.h HAVE_STDBOOL)
+check_include_files(pthread.h HAVE_PTHREAD)
+
 configure_file(${INCLUDE_DIRS}/config.h.in
                ${INCLUDE_DIRS}/config.h)
-
+if(WIN32)
+    add_definition("/D_WIN32")
+endif()
 if(UNIX) 
     set(LIBS pthread)
 endif()

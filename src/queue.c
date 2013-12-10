@@ -1,5 +1,6 @@
-#include "queue.h"
 #include <stdlib.h>
+
+#include "queue.h"
 
 typedef struct _queue_node_t queue_node_t;
 

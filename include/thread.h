@@ -8,7 +8,7 @@ extern "C" {
 // Simple threading functionality
 
 // thread class structure
-typedef _thread_t thread_t;
+typedef struct _thread_t thread_t;
 
 // thread executable function type
 typedef void(*thread_function_t)(void*);

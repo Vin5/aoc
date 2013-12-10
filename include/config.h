@@ -1,7 +1,7 @@
 #ifndef AOC_CONFIG_H
 #define AOC_CONFIG_H
 
-#cmakedefine HAVE_STDBOOL
-#cmakedefine HAVE_PTHREAD
+#define HAVE_STDBOOL
+#define HAVE_PTHREAD
 
 #endif // AOC_CONFIG_H
