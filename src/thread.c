@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h> // for memset
+#include <assert.h>
 
 #include "thread.h"
 #include "config.h"
@@ -66,7 +67,7 @@ void thread_start(thread_t* self){
 void thread_join(thread_t* self){
     assert(self);
     int rc = pthread_join(self->tid, 0);
-    assert(rc == 0);
+    assert(0 == rc);
 }
 
 static void thread_finalize(thread_t* self)  {

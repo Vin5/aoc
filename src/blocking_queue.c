@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <assert.h>
 
 #include "blocking_queue.h"
 #include "condition.h"

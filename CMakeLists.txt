@@ -12,6 +12,8 @@ set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(SOURCE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(TESTS_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 # Check platform features
 include(CheckIncludeFiles)
@@ -34,9 +36,25 @@ file(GLOB SOURCES
      ${SOURCE_DIR}/*.c)
 
 
+
 include_directories(${INCLUDE_DIRS})
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${INCLUDES})
 
 if(LIBS) 
     target_link_libraries(${PROJECT_NAME} ${LIBS})
 endif()
+
+
+###############################################
+function(create_test name libs)
+    add_executable(${name} "${TESTS_DIR}/${name}.c"  ${ARGN})
+    foreach(lib "${libs}")
+        target_link_libraries(${name} ${lib})
+    endforeach()
+    add_test(${name} ${CMAKE_CURRENT_BINARY_DIR}/${name})
+endfunction()
+###############################################
+
+enable_testing()
+
+create_test(integration_test ${PROJECT_NAME})
