@@ -59,3 +59,4 @@ enable_testing()
 
 include_directories(${TESTS_DIR})
 create_test(integration_test ${PROJECT_NAME})
+create_test(queue_test ${PROJECT_NAME})
