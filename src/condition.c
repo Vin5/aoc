@@ -39,7 +39,7 @@ void condition_destroy(condition_t** condition_ptr) {
     assert(condition_ptr);
     condition_t* self = *condition_ptr;
     if(self) {
-        mutex_destroy(self->mutex);
+        mutex_destroy(&self->mutex);
         if(self->condition)
             CloseHandle(self->condition);
         free(self);
