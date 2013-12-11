@@ -47,7 +47,7 @@ endif()
 
 ###############################################
 function(create_test name libs)
-    add_executable(${name} "${TESTS_DIR}/${name}.c"  ${ARGN})
+    add_executable(${name} "${TESTS_DIR}/${name}.c" "${TESTS_DIR}/tests.c" ${ARGN})
     foreach(lib "${libs}")
         target_link_libraries(${name} ${lib})
     endforeach()
@@ -57,4 +57,5 @@ endfunction()
 
 enable_testing()
 
+include_directories(${TESTS_DIR})
 create_test(integration_test ${PROJECT_NAME})
