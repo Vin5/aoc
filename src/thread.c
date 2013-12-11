@@ -34,7 +34,7 @@ static unsigned int __stdcall run(void* param){
     return 0;
 }
 
-void thread_start(thread_t* thread){
+void thread_start(thread_t* self){
     assert(self);
     self->tid = _beginthreadex(0, 0, run, (void*) self, 0, 0);
     assert(self->tid);
