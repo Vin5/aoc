@@ -73,7 +73,6 @@ mutex_t* mutex_new(void) {
 
 void mutex_lock(mutex_t* self) {
     assert(self);
-    assert(!self->locked);
 
     int rc = pthread_mutex_lock(&self->mutex);
     assert(0 == rc);
