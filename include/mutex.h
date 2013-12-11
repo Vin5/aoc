@@ -25,9 +25,6 @@ void mutex_destroy(mutex_t** mutex);
 // get a pointer to platform specific underlying mutex primitive
 void* mutex_native(mutex_t* mutex);
 
-// check if mutex is locked
-bool mutex_is_locked(mutex_t* mutex);
-
 #ifdef __cplusplus
 }
 #endif
