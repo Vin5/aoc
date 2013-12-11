@@ -43,7 +43,7 @@ void thread_start(thread_t* self){
 void thread_join(thread_t* self){
     assert(self);
     DWORD rc = WaitForSingleObject((HANDLE)self->tid, INFINITE);
-    assert(rc == WAIT_OBJECT_0));
+    assert(rc == WAIT_OBJECT_0);
 }
 
 static void thread_finalize(thread_t* self)  {
