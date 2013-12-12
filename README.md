@@ -76,8 +76,20 @@ void callback(void) {
     condition_notify(finish);
 }
 
-Tested platforms:
+Build instructions (linux):
+    $ cd aoc
+    $ mkdir build && cd build
+    $ cmake -DENABLE_TESTS=1 -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" ..
+    $ make
+    $ ctest
+
+Build requirements:
+    - CMake version >= 2.6
+
+Tested platforms (probably works on the other platforms too):
 Linux:
+    - GCC 4.3
     - GCC 4.7
 Windows:
     - VS 8.0
+    - VS 10.0
