@@ -25,7 +25,7 @@ void integration_test() {
     char message[] = "Hello world!";
     active_t* object = active_new();
 
-    // take a series of inversions
+    // take a series of inversions in a background thread
     active_send(object, reverser, message, NULL); // after this call message is going to be '!dlrow olleH'
     active_send(object, reverser, message, NULL); // message -> 'Hello world!' again
     active_send(object, reverser, message, callback); // message -> '!dlrow olleH' finally
