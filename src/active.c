@@ -10,20 +10,51 @@ struct _active_t {
     blocking_queue_t* queue;
 };
 
-static void done(void) {
+typedef struct _active_context_t {
+   active_function_t function;
+   void* params;
+   active_callback_t callback;
+} active_context_t;
 
+
+static active_context_t* active_context_new(active_function_t function, void* params, active_callback_t callback) {
+    active_context_t* self = (active_context_t*) malloc(sizeof(active_context_t));
+    if(!self)
+        return NULL;
+
+    self->function = function;
+    self->params = params;
+    self->callback = callback;
+
+    return self;
 }
+
+static void active_context_destroy(active_context_t** self_ptr) {
+    assert(self_ptr);
+
+    if(*self_ptr) {
+        free(*self_ptr);
+        *self_ptr = NULL;
+    }
+}
+
+static active_context_t done;
 
 static void dispatch(void* param) {
     blocking_queue_t* queue;
-    active_function_t function;
+    active_context_t* context;
 
     assert(param);
 
     queue = (blocking_queue_t*) param;
-    function = NULL;
-    while((function = blocking_queue_pull(queue)) != done)
-        function();
+    context = NULL;
+    while((context = blocking_queue_pull(queue)) != &done) {
+        context->function(context->params);
+        if(context->callback) {
+            context->callback();
+        }
+        active_context_destroy(&context);
+    }
 }
 
 active_t* active_new(void) {
@@ -50,10 +81,14 @@ active_t* active_new(void) {
     return self;
 }
 
-void active_send(active_t* self, active_function_t function) {
-    assert(self);
+void active_send(active_t *self, active_function_t function, void* params, active_callback_t callback) {
+    active_context_t* context;
 
-    blocking_queue_push(self->queue, function);
+    assert(self);
+    assert(function);
+
+    context = active_context_new(function, params, callback);
+    blocking_queue_push(self->queue, context);
 }
 
 void active_destroy(active_t** object_ptr) {
@@ -62,7 +97,7 @@ void active_destroy(active_t** object_ptr) {
 
     self = *object_ptr;
     if(self) {
-        active_send(self, done);
+        blocking_queue_push(self->queue, &done);
         thread_join(self->thread);
 
         thread_destroy(&self->thread);

@@ -1,10 +1,16 @@
 #include <string.h>
 #include "tests.h"
 #include "active.h"
+#include "boolean.h"
 
-static char message[] = "Hello world!";
+static bool execution_finished = false;
 
-static void reverser(void) {
+static void callback() {
+    execution_finished = true;
+}
+
+static void reverser(void* params) {
+    char* message = (char*) params;
     size_t len = strlen(message);
     int i = 0;
     char temp;
@@ -16,10 +22,12 @@ static void reverser(void) {
 }
 
 void integration_test() {
+    char message[] = "Hello world!";
     active_t* object = active_new();
-    active_send(object, reverser);
+    active_send(object, reverser, message, callback);
     active_destroy(&object);
     CHECK_EQ(strcmp(message, "!dlrow olleH"), 0);
+    CHECK_TRUE(execution_finished);
 }
 
 int main(int argc, char* argv[]) {
