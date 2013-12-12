@@ -40,7 +40,7 @@ More examples of usage you can find in tests/integration_test.c.
 Background thread starts with an active object creation and lives while
 the associated active object is alive.
 
-Asynchronous task finishing can be catched with callback function which
+Asynchronous task finish can be caught with callback function which
 is the last parameter of 'active_send' function.
 
 If you need to implement a tricky synchronization mechanism the library
@@ -93,3 +93,6 @@ Linux:
 Windows:
     - VS 8.0
     - VS 10.0
+
+LICENSE:
+    See LICENSE file in the project directory
