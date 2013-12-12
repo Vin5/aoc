@@ -2,6 +2,7 @@
 #define AOC_MUTEX_H
 
 #include "boolean.h"
+#include "config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,19 +12,19 @@ extern "C" {
 typedef struct _mutex_t mutex_t;
 
 // allocate resources for mutex object
-mutex_t* mutex_new(void);
+AOC_EXPORT mutex_t* mutex_new(void);
 
 // lock
-void mutex_lock(mutex_t* mutex);
+AOC_EXPORT void mutex_lock(mutex_t* mutex);
 
 // unlock
-void mutex_unlock(mutex_t* mutex);
+AOC_EXPORT void mutex_unlock(mutex_t* mutex);
 
 // deallocate resources
-void mutex_destroy(mutex_t** mutex);
+AOC_EXPORT void mutex_destroy(mutex_t** mutex);
 
 // get a pointer to platform specific underlying mutex primitive
-void* mutex_native(mutex_t* mutex);
+AOC_EXPORT void* mutex_native(mutex_t* mutex);
 
 #ifdef __cplusplus
 }

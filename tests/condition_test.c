@@ -68,7 +68,7 @@ void test_condition() {
     thread_join(arbiter);
     thread_destroy(&arbiter);
 
-    CHECK_EQ(1, 1); // if we are here - all threads is finished correctly
+    CHECK_EQ(1, 1); // if we are here - all threads are finished correctly
 }
 
 

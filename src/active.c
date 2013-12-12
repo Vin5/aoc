@@ -15,10 +15,13 @@ static void done(void) {
 }
 
 static void dispatch(void* param) {
+    blocking_queue_t* queue;
+    active_function_t function;
+
     assert(param);
 
-    blocking_queue_t* queue = (blocking_queue_t*) param;
-    active_function_t function = NULL;
+    queue = (blocking_queue_t*) param;
+    function = NULL;
     while((function = blocking_queue_pull(queue)) != done)
         function();
 }
@@ -54,8 +57,10 @@ void active_send(active_t* self, active_function_t function) {
 }
 
 void active_destroy(active_t** object_ptr) {
+    active_t* self;
     assert(object_ptr);
-    active_t* self = *object_ptr;
+
+    self = *object_ptr;
     if(self) {
         active_send(self, done);
         thread_join(self->thread);

@@ -19,9 +19,11 @@ struct _queue_t {
 
 
 static queue_node_t* queue_node_new(void* value){
+    queue_node_t* node;
+
     assert(value);
 
-    queue_node_t* node = (queue_node_t*) malloc(sizeof(queue_node_t));
+    node = (queue_node_t*) malloc(sizeof(queue_node_t));
     if(NULL == node) {
         return NULL;
     }
@@ -55,11 +57,15 @@ queue_t* queue_new(void) {
 
 
 void queue_destroy(queue_t** queue_ptr) {
+    queue_node_t* node;
+    queue_node_t* next;
+    queue_t* self;
+
     assert(queue_ptr);
 
-    queue_node_t* node = NULL;
-    queue_node_t* next = NULL;
-    queue_t* self = *queue_ptr;
+    node = NULL;
+    next = NULL;
+    self = *queue_ptr;
 
     if(self) {
         node = self->tail;
@@ -77,9 +83,11 @@ bool queue_is_empty(queue_t* self) {
 }
 
 void queue_push(queue_t* self, void* element) {
+    queue_node_t* node;
+
     assert(self);
 
-    queue_node_t* node = queue_node_new(element);
+    node = queue_node_new(element);
     if(!node) {
         return; // TODO can we do better?
     }
@@ -98,15 +106,18 @@ void queue_push(queue_t* self, void* element) {
 }
 
 void* queue_pull(queue_t* self) {
+    void* value;
+    queue_node_t* node;
+
     assert(self);
 
-    void* value = NULL;
+    value = NULL;
 
     if(queue_is_empty(self)) {
         return NULL;
     }
 
-    queue_node_t* node = self->head;
+    node = self->head;
     if(self->head == self->tail) {
         self->tail = self->head = NULL;
     }

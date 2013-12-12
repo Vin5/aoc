@@ -42,9 +42,11 @@ void blocking_queue_push(blocking_queue_t* self, void* value) {
 }
 
 void* blocking_queue_pull(blocking_queue_t* self) {
+    void* element;
+
     assert(self);
 
-    void* element = NULL;
+    element = NULL;
 
     condition_acquire(self->condition);
 
@@ -57,9 +59,11 @@ void* blocking_queue_pull(blocking_queue_t* self) {
 }
 
 void* blocking_queue_try_pull(blocking_queue_t* self) {
+    void* element;
+
     assert(self);
 
-    void* element = NULL;
+    element = NULL;
 
     condition_acquire(self->condition);
 
@@ -71,9 +75,11 @@ void* blocking_queue_try_pull(blocking_queue_t* self) {
 }
 
 void blocking_queue_destroy(blocking_queue_t** queue) {
+    blocking_queue_t* self;
+
     assert(queue);
 
-    blocking_queue_t* self = *queue;
+    self = *queue;
     if(self) {
         queue_destroy(&self->queue);
         condition_destroy(&self->condition);

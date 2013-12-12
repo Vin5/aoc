@@ -36,8 +36,11 @@ condition_t* condition_new(void) {
 
 
 void condition_destroy(condition_t** condition_ptr) {
+    condition_t* self;
+
     assert(condition_ptr);
-    condition_t* self = *condition_ptr;
+
+    self = *condition_ptr;
     if(self) {
         mutex_destroy(&self->mutex);
         if(self->condition)
@@ -50,7 +53,6 @@ void condition_destroy(condition_t** condition_ptr) {
 
 void condition_wait(condition_t* self) {
     assert(self);
-    assert(mutex_is_locked(self->mutex));
 
     condition_release(self);
     WaitForSingleObject(self->condition, INFINITE);
@@ -60,7 +62,6 @@ void condition_wait(condition_t* self) {
 
 void condition_notify(condition_t* self) {
     assert(self);
-    assert(mutex_is_locked(self->mutex));
 
     SetEvent(self->condition);
 }
@@ -92,10 +93,13 @@ condition_t* condition_new(void) {
 
 
 void condition_destroy(condition_t** condition_ptr) {
+    int ret;
+    condition_t* self;
+
     assert(condition_ptr);
 
-    int ret = 0;
-    condition_t* self = *condition_ptr;
+    ret = 0;
+    self = *condition_ptr;
 
     if(self) {
         do {
@@ -111,15 +115,17 @@ void condition_destroy(condition_t** condition_ptr) {
 
 
 void condition_wait(condition_t* self) {
+    int rc;
     assert(self);
-    int rc = pthread_cond_wait(&self->condition, mutex_native(self->mutex));
+    rc = pthread_cond_wait(&self->condition, mutex_native(self->mutex));
     assert(0 == rc);
 }
 
 
 void condition_notify(condition_t* self) {
+    int rc;
     assert(self);
-    int rc = pthread_cond_signal(&self->condition);
+    rc = pthread_cond_signal(&self->condition);
     assert(0 == rc);
 }
 

@@ -34,8 +34,11 @@ void mutex_unlock(mutex_t* self) {
 }
 
 void mutex_destroy(mutex_t** mutex_ptr) {
+    mutex_t* self;
+
     assert(mutex_ptr);
-    mutex_t* self = *mutex_ptr;
+
+    self = *mutex_ptr;
     if(self) {
         DeleteCriticalSection(&self->mutex);
         free(self);
@@ -61,21 +64,27 @@ mutex_t* mutex_new(void) {
 }
 
 void mutex_lock(mutex_t* self) {
-    assert(self);
+    int rc;
 
-    int rc = pthread_mutex_lock(&self->mutex);
+    assert(self);
+    rc = pthread_mutex_lock(&self->mutex);
     assert(0 == rc);
 }
 
 void mutex_unlock(mutex_t* self) {
+    int rc;
+
     assert(self);
-    int rc = pthread_mutex_unlock(&self->mutex);
+    rc = pthread_mutex_unlock(&self->mutex);
     assert(0 == rc);
 }
 
 void mutex_destroy(mutex_t** mutex_ptr) {
+    mutex_t* self;
+
     assert(mutex_ptr);
-    mutex_t* self = *mutex_ptr;
+
+    self = *mutex_ptr;
     if(self) {
         pthread_mutex_destroy(&self->mutex);
         free(self);

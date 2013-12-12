@@ -41,8 +41,9 @@ void thread_start(thread_t* self){
 }
 
 void thread_join(thread_t* self){
+    DWORD rc;
     assert(self);
-    DWORD rc = WaitForSingleObject((HANDLE)self->tid, INFINITE);
+    rc = WaitForSingleObject((HANDLE)self->tid, INFINITE);
     assert(rc == WAIT_OBJECT_0);
 }
 
@@ -59,14 +60,16 @@ static void* run(void* param){
 }
 
 void thread_start(thread_t* self){
+    int rc;
     assert(self);
-    int rc = pthread_create(&self->tid, NULL, run, (void*)self);
+    rc = pthread_create(&self->tid, NULL, run, (void*)self);
     assert(0 == rc);
 }
 
 void thread_join(thread_t* self){
+    int rc;
     assert(self);
-    int rc = pthread_join(self->tid, NULL);
+    rc = pthread_join(self->tid, NULL);
     assert(0 == rc);
 }
 
@@ -76,9 +79,11 @@ static void thread_finalize(thread_t* self)  {
 #endif
 
 thread_t* thread_new(thread_function_t function, void* params) {
+    thread_t* self;
+
     assert(function);
 
-    thread_t* self =(thread_t*) malloc(sizeof(thread_t));
+    self =(thread_t*) malloc(sizeof(thread_t));
     if(NULL == self){
         return NULL;
     }
