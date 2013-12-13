@@ -76,17 +76,16 @@ the following manner:
         condition_notify(finish);
     }
 
-Build instructions (linux)
---------------------------
-
+### Build instructions (linux)
+* * *
     $ cd aoc
     $ mkdir build && cd build
     $ cmake -DENABLE_TESTS=1 -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" ..
     $ make
     $ ctest
 
-Build requirements
-------------------
+### Build requirements
+* * *
 - CMake version >= 2.6
 
 ### Tested platforms (probably works on the other platforms as well)
@@ -101,6 +100,6 @@ Windows:
 - VS 8.0
 - VS 10.0
 
-LICENSE
--------
+### LICENSE
+* * *
 See LICENSE file in the project directory
