@@ -89,7 +89,7 @@ the following manner:
 - CMake version >= 2.6
 
 ### Tested platforms (probably works on the other platforms as well)
-
+* * *
 Linux:  
 
 - GCC 4.3
