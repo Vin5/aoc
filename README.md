@@ -89,8 +89,7 @@ Build requirements
 ------------------
 - CMake version >= 2.6
 
-Tested platforms (probably works on the other platforms too)
-----------------
+### Tested platforms (probably works on the other platforms as well)
 
 Linux:  
 
