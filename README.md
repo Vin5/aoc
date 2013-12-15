@@ -11,27 +11,27 @@ Example:
 #include <active.h>
 
 void print(void* data) {
-	const char* message = (const char*) data;
-	printf("%s", message);
+    const char* message = (const char*) data;
+    printf("%s", message);
 }
 
 void some_func(aoc_active_t* background_logger) {
-	// do smth...    
+    // do smth...
 
-	// next call returns immediately
-        aoc_active_send(background_logger, print, (void*)"Message to log", NULL); // message will be logged in background
+    // next call returns immediately
+    aoc_active_send(background_logger, print, (void*)"Message to log", NULL); // message will be logged in background
 
-	// do smth...
+    // do smth...
 }
 
 int main(int argc, char* argv[]) {
-        aoc_active_t* worker = aoc_active_new();
-	// ... 
-	some_func(worker);
+    aoc_active_t* worker = aoc_active_new();
+    // ...
+    some_func(worker);
 
-	// ...
-        aoc_active_destroy(&worker); // waits for all async tasks is finished
-	return 0;
+    // ...
+    aoc_active_destroy(&worker); // waits for all async tasks is finished
+    return 0;
 }
 ```
 More examples of usage you can find in tests/integration_test.c.
@@ -59,16 +59,16 @@ the following manner:
 static aoc_condition_t* finish = NULL;
 
 int main(int argc, char* argv[]) {
-        aoc_active_t* worker = aoc_active_new();
-        condition = aoc_condition_new();
+    aoc_active_t* worker = aoc_active_new();
+    condition = aoc_condition_new();
 
-        aoc_active_send(worker, print, (void*)"Hello world", callback);
-        aoc_condition_acquire(finish);
-        aoc_condition_wait(finish);
-        aoc_condition_release(finish);
+    aoc_active_send(worker, print, (void*)"Hello world", callback);
+    aoc_condition_acquire(finish);
+    aoc_condition_wait(finish);
+    aoc_condition_release(finish);
 
-        aoc_condition_destroy(finish);
-        aoc_active_destroy(worker);
+    aoc_condition_destroy(finish);
+    aoc_active_destroy(worker);
 }
 
 void callback(void) {
