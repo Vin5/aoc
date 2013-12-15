@@ -7,25 +7,24 @@ aoc is a simple threading framework allowing to execute some
 tasks in a backgound thread associated with an active object.
 
 Example:
+```cpp
+#include <active.h>
 
-    #include <active.h>
-
-    void print(void* data) {
+void print(void* data) {
 	const char* message = (const char*) data;
 	printf("%s", message);
-    }
+}
 
-    void some_func(active_t* background_logger) {
+void some_func(active_t* background_logger) {
 	// do smth...    
 
 	// next call returns immediately
 	active_send(background_logger, print, (void*)"Message to log", NULL); // message will be logged in background
-	
 
 	// do smth...
-    }
+}
 
-    int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	active_t* worker = active_new();
 	// ... 
 	some_func(worker);
@@ -33,8 +32,8 @@ Example:
 	// ...
 	active_destroy(&worker); // waits for all async tasks is finished
 	return 0;
-    }
-
+}
+```
 More examples of usage you can find in tests/integration_test.c.
 
 Background thread starts with an active object creation and lives while  
@@ -53,29 +52,29 @@ examples of their usages you can find in 'tests' directory.
 For example you might want to wait for some of your async tasks is finished.  
 In this case you can use callback function and condition variable in  
 the following manner:
+```cpp
+#include <active.h>
+#include <condition.h>
 
-    #include <active.h>
-    #include <condition.h>
+static condition_t* finish = NULL;
 
-    static condition_t* finish = NULL;
+int main(int argc, char* argv[]) {
+	active_t* worker = active_new();
+	condition = condition_new();
 
-    int main(int argc, char* argv[]) {
-        active_t* worker = active_new();
-        condition = condition_new();
+	active_send(worker, print, (void*)"Hello world", callback);
+	condition_acquire(finish);
+	condition_wait(finish);
+	condition_release(finish);
 
-        active_send(worker, print, (void*)"Hello world", callback);
-        condition_acquire(finish);
-        condition_wait(finish);
-        condition_release(finish);
+	condition_destroy(finish);
+	active_destroy(worker);
+}
 
-        condition_destroy(finish);
-        active_destroy(worker);
-    }
-
-    void callback(void) {
-        condition_notify(finish);
-    }
-
+void callback(void) {
+	condition_notify(finish);
+}
+```
 ### Build instructions (linux)
 * * *
     $ cd aoc
