@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h> // for memset
 #include <assert.h>
+#include <errno.h>
 
 #include "thread.h"
 #include "config.h"
@@ -62,15 +63,15 @@ static void* run(void* param){
 void aoc_thread_start(aoc_thread_t* self){
     int rc;
     assert(self);
-    rc = pthread_create(&self->tid, NULL, run, (void*)self);
-    assert(0 == rc);
+    errno = pthread_create(&self->tid, NULL, run, (void*)self);
+    assert(0 == errno);
 }
 
 void aoc_thread_join(aoc_thread_t* self){
     int rc;
     assert(self);
-    rc = pthread_join(self->tid, NULL);
-    assert(0 == rc);
+    errno = pthread_join(self->tid, NULL);
+    assert(0 == errno);
 }
 
 static void thread_finalize(aoc_thread_t* self)  {
