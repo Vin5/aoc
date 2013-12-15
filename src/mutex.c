@@ -13,8 +13,8 @@ struct _mutex_t {
     CRITICAL_SECTION mutex;
 };
 
-mutex_t* mutex_new(void) {
-    mutex_t* self = (mutex_t*) malloc(sizeof(mutex_t));
+aoc_mutex_t* aoc_mutex_new(void) {
+    aoc_mutex_t* self = (aoc_mutex_t*) malloc(sizeof(aoc_mutex_t));
     if(!self) {
         return NULL;
     }
@@ -23,18 +23,18 @@ mutex_t* mutex_new(void) {
     return self;
 }
 
-void mutex_lock(mutex_t* self) {
+void aoc_mutex_lock(aoc_mutex_t* self) {
     assert(self);
     EnterCriticalSection(&self->mutex);
 }
 
-void mutex_unlock(mutex_t* self) {
+void aoc_mutex_unlock(aoc_mutex_t* self) {
     assert(self);
     LeaveCriticalSection(&self->mutex);
 }
 
-void mutex_destroy(mutex_t** mutex_ptr) {
-    mutex_t* self;
+void aoc_mutex_destroy(aoc_mutex_t** mutex_ptr) {
+    aoc_mutex_t* self;
 
     assert(mutex_ptr);
 
@@ -54,8 +54,8 @@ struct _mutex_t {
     pthread_mutex_t mutex;
 };
 
-mutex_t* mutex_new(void) {
-    mutex_t* self = (mutex_t*) malloc(sizeof(mutex_t));
+aoc_mutex_t* aoc_mutex_new(void) {
+    aoc_mutex_t* self = (aoc_mutex_t*) malloc(sizeof(aoc_mutex_t));
     if(!self) {
         return NULL;
     }
@@ -63,7 +63,7 @@ mutex_t* mutex_new(void) {
     return self;
 }
 
-void mutex_lock(mutex_t* self) {
+void aoc_mutex_lock(aoc_mutex_t* self) {
     int rc;
 
     assert(self);
@@ -71,7 +71,7 @@ void mutex_lock(mutex_t* self) {
     assert(0 == rc);
 }
 
-void mutex_unlock(mutex_t* self) {
+void aoc_mutex_unlock(aoc_mutex_t* self) {
     int rc;
 
     assert(self);
@@ -79,8 +79,8 @@ void mutex_unlock(mutex_t* self) {
     assert(0 == rc);
 }
 
-void mutex_destroy(mutex_t** mutex_ptr) {
-    mutex_t* self;
+void aoc_mutex_destroy(aoc_mutex_t** mutex_ptr) {
+    aoc_mutex_t* self;
 
     assert(mutex_ptr);
 
@@ -96,7 +96,7 @@ void mutex_destroy(mutex_t** mutex_ptr) {
 #error Platform is not supported
 #endif
 
-void* mutex_native(mutex_t* self) {
+void* aoc_mutex_native(aoc_mutex_t* self) {
     assert(self);
     return &self->mutex;
 }

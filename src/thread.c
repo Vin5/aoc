@@ -29,65 +29,65 @@ struct _thread_t {
 #ifdef _WIN32
 
 static unsigned int __stdcall run(void* param){
-    thread_t* self = (thread_t*) param;
+    aoc_thread_t* self = (aoc_thread_t*) param;
     self->function(self->params);
     return 0;
 }
 
-void thread_start(thread_t* self){
+void aoc_thread_start(aoc_thread_t* self){
     assert(self);
     self->tid = _beginthreadex(0, 0, run, (void*) self, 0, 0);
     assert(self->tid);
 }
 
-void thread_join(thread_t* self){
+void aoc_thread_join(aoc_thread_t* self){
     DWORD rc;
     assert(self);
     rc = WaitForSingleObject((HANDLE)self->tid, INFINITE);
     assert(rc == WAIT_OBJECT_0);
 }
 
-static void thread_finalize(thread_t* self)  {
+static void thread_finalize(aoc_thread_t* self)  {
     if(self->tid)
         CloseHandle((HANDLE)self->tid);
 }
 #else
 
 static void* run(void* param){
-    thread_t* self = (thread_t*) param;
+    aoc_thread_t* self = (aoc_thread_t*) param;
     self->function(self->params);
     return NULL;
 }
 
-void thread_start(thread_t* self){
+void aoc_thread_start(aoc_thread_t* self){
     int rc;
     assert(self);
     rc = pthread_create(&self->tid, NULL, run, (void*)self);
     assert(0 == rc);
 }
 
-void thread_join(thread_t* self){
+void aoc_thread_join(aoc_thread_t* self){
     int rc;
     assert(self);
     rc = pthread_join(self->tid, NULL);
     assert(0 == rc);
 }
 
-static void thread_finalize(thread_t* self)  {
+static void thread_finalize(aoc_thread_t* self)  {
 
 }
 #endif
 
-thread_t* thread_new(thread_function_t function, void* params) {
-    thread_t* self;
+aoc_thread_t* aoc_thread_new(thread_function_t function, void* params) {
+    aoc_thread_t* self;
 
     assert(function);
 
-    self =(thread_t*) malloc(sizeof(thread_t));
+    self =(aoc_thread_t*) malloc(sizeof(aoc_thread_t));
     if(NULL == self){
         return NULL;
     }
-    memset(self, 0, sizeof(thread_t));
+    memset(self, 0, sizeof(aoc_thread_t));
 
     self->function = function;
     self->params = params;
@@ -95,7 +95,7 @@ thread_t* thread_new(thread_function_t function, void* params) {
     return self;
 }
 
-void thread_destroy(thread_t** self) {
+void aoc_thread_destroy(aoc_thread_t** self) {
     assert(self);
     if(*self) {
         thread_finalize(*self);

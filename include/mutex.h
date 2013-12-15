@@ -9,22 +9,22 @@ extern "C" {
 #endif
 
 // Mutex class structure
-typedef struct _mutex_t mutex_t;
+typedef struct _mutex_t aoc_mutex_t;
 
 // allocate resources for mutex object
-AOC_EXPORT mutex_t* mutex_new(void);
+AOC_EXPORT aoc_mutex_t* aoc_mutex_new(void);
 
 // lock
-AOC_EXPORT void mutex_lock(mutex_t* mutex);
+AOC_EXPORT void aoc_mutex_lock(aoc_mutex_t* mutex);
 
 // unlock
-AOC_EXPORT void mutex_unlock(mutex_t* mutex);
+AOC_EXPORT void aoc_mutex_unlock(aoc_mutex_t* mutex);
 
 // deallocate resources
-AOC_EXPORT void mutex_destroy(mutex_t** mutex);
+AOC_EXPORT void aoc_mutex_destroy(aoc_mutex_t** mutex);
 
 // get a pointer to platform specific underlying mutex primitive
-AOC_EXPORT void* mutex_native(mutex_t* mutex);
+AOC_EXPORT void* aoc_mutex_native(aoc_mutex_t* mutex);
 
 #ifdef __cplusplus
 }

@@ -3,15 +3,15 @@
 #include "queue.h"
 #include "tests.h"
 
-static queue_t* queue;
+static aoc_queue_t* queue;
 
 void setup() {
-    queue = queue_new();
+    queue = aoc_queue_new();
     FATAL_TRUE(queue);
 }
 
 void teardown() {
-    queue_destroy(&queue);
+    aoc_queue_destroy(&queue);
 }
 
 void test_common_cases() {
@@ -23,15 +23,15 @@ void test_common_cases() {
 
     for(i = 0; i < 256; i++) {
         values[i] = i;
-        queue_push(queue, &values[i]);
+        aoc_queue_push(queue, &values[i]);
     }
 
-    CHECK_FALSE(queue_is_empty(queue));
+    CHECK_FALSE(aoc_queue_is_empty(queue));
 
-    CHECK_EQ(queue_size(queue), 256);
+    CHECK_EQ(aoc_queue_size(queue), 256);
 
     for(i = 0; i < 256; i++) {
-        test_val  = queue_pull(queue);
+        test_val  = aoc_queue_pull(queue);
 
         FATAL_TRUE(test_val);
 
@@ -39,7 +39,7 @@ void test_common_cases() {
 
     }
 
-    CHECK_TRUE(queue_is_empty(queue));
+    CHECK_TRUE(aoc_queue_is_empty(queue));
 }
 
 void test_edge_cases() {
@@ -47,25 +47,25 @@ void test_edge_cases() {
     value = (int*)malloc(sizeof(int));
     *value = 5;
 
-    CHECK_TRUE(queue_is_empty(queue));
+    CHECK_TRUE(aoc_queue_is_empty(queue));
 
-    CHECK_FALSE(queue_pull(queue));
+    CHECK_FALSE(aoc_queue_pull(queue));
 
-    CHECK_EQ(queue_size(queue), 0);
+    CHECK_EQ(aoc_queue_size(queue), 0);
 
-    queue_push(queue, value);
+    aoc_queue_push(queue, value);
 
-    CHECK_EQ(queue_size(queue), 1);
+    CHECK_EQ(aoc_queue_size(queue), 1);
 
-    CHECK_EQ(queue_pull(queue), value);
+    CHECK_EQ(aoc_queue_pull(queue), value);
 
     free(value);
 
-    CHECK_EQ(queue_size(queue), 0);
+    CHECK_EQ(aoc_queue_size(queue), 0);
 
-    CHECK_FALSE(queue_pull(queue));
+    CHECK_FALSE(aoc_queue_pull(queue));
 
-    CHECK_TRUE(queue_is_empty(queue));
+    CHECK_TRUE(aoc_queue_is_empty(queue));
 }
 
 

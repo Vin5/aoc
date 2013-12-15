@@ -6,8 +6,8 @@
 #include "blocking_queue.h"
 
 struct _active_t {
-    thread_t* thread;
-    blocking_queue_t* queue;
+    aoc_thread_t* thread;
+    aoc_blocking_queue_t* queue;
 };
 
 typedef struct _active_context_t {
@@ -41,14 +41,14 @@ static void active_context_destroy(active_context_t** self_ptr) {
 static active_context_t done;
 
 static void dispatch(void* param) {
-    blocking_queue_t* queue;
+    aoc_blocking_queue_t* queue;
     active_context_t* context;
 
     assert(param);
 
-    queue = (blocking_queue_t*) param;
+    queue = (aoc_blocking_queue_t*) param;
     context = NULL;
-    while((context = blocking_queue_pull(queue)) != &done) {
+    while((context = aoc_blocking_queue_pull(queue)) != &done) {
         context->function(context->params);
         if(context->callback) {
             context->callback();
@@ -57,51 +57,51 @@ static void dispatch(void* param) {
     }
 }
 
-active_t* active_new(void) {
-    active_t* self = (active_t*) malloc(sizeof(active_t));
+aoc_active_t* aoc_active_new(void) {
+    aoc_active_t* self = (aoc_active_t*) malloc(sizeof(aoc_active_t));
     if(!self) {
         return NULL;
     }
 
-    self->queue = blocking_queue_new();
+    self->queue = aoc_blocking_queue_new();
     if(!self->queue) {
         free(self);
         return NULL;
     }
 
-    self->thread = thread_new(dispatch, self->queue);
+    self->thread = aoc_thread_new(dispatch, self->queue);
     if(!self->thread) {
-        blocking_queue_destroy(&self->queue);
+        aoc_blocking_queue_destroy(&self->queue);
         free(self);
         return NULL;
     }
 
-    thread_start(self->thread);
+    aoc_thread_start(self->thread);
 
     return self;
 }
 
-void active_send(active_t *self, active_function_t function, void* params, active_callback_t callback) {
+void aoc_active_send(aoc_active_t *self, active_function_t function, void* params, active_callback_t callback) {
     active_context_t* context;
 
     assert(self);
     assert(function);
 
     context = active_context_new(function, params, callback);
-    blocking_queue_push(self->queue, context);
+    aoc_blocking_queue_push(self->queue, context);
 }
 
-void active_destroy(active_t** object_ptr) {
-    active_t* self;
+void aoc_active_destroy(aoc_active_t** object_ptr) {
+    aoc_active_t* self;
     assert(object_ptr);
 
     self = *object_ptr;
     if(self) {
-        blocking_queue_push(self->queue, &done);
-        thread_join(self->thread);
+        aoc_blocking_queue_push(self->queue, &done);
+        aoc_thread_join(self->thread);
 
-        thread_destroy(&self->thread);
-        blocking_queue_destroy(&self->queue);
+        aoc_thread_destroy(&self->thread);
+        aoc_blocking_queue_destroy(&self->queue);
         free(self);
         *object_ptr = NULL;
     }

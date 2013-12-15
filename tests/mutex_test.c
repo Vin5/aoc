@@ -8,26 +8,26 @@
 #define THRESHOLD 10000000
 #define THREAD_COUNT 4
 
-static mutex_t* mutex = NULL;
+static aoc_mutex_t* mutex = NULL;
 
 void setup() {
-    mutex = mutex_new();
+    mutex = aoc_mutex_new();
 }
 
 void teardown() {
-    mutex_destroy(&mutex);
+    aoc_mutex_destroy(&mutex);
 }
 
 void thread_func(void* param) {
     int* value = (int*)param;
     while(true) {
-        mutex_lock(mutex);
+        aoc_mutex_lock(mutex);
         if(*value >= THRESHOLD) {
-            mutex_unlock(mutex);
+            aoc_mutex_unlock(mutex);
             break;
         }
         (*value)++;
-        mutex_unlock(mutex);
+        aoc_mutex_unlock(mutex);
     }
 
 }
@@ -39,17 +39,17 @@ void test_mutex() {
 
     int i;
 
-    thread_t* threads[THREAD_COUNT];
+    aoc_thread_t* threads[THREAD_COUNT];
 
 
     for(i = 0; i < THREAD_COUNT; i++) {
-        threads[i] = thread_new(thread_func, (void*)&value);
-        thread_start(threads[i]);
+        threads[i] = aoc_thread_new(thread_func, (void*)&value);
+        aoc_thread_start(threads[i]);
     }
 
     for(i = 0; i < THREAD_COUNT; i++) {
-        thread_join(threads[i]);
-        thread_destroy(&threads[i]);
+        aoc_thread_join(threads[i]);
+        aoc_thread_destroy(&threads[i]);
     }
 
     CHECK_EQ(value, THRESHOLD);

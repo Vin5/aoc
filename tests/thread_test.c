@@ -10,10 +10,10 @@ void thread_func(void* param) {
 
 void test_thread() {
     volatile int value = 5;
-    thread_t* thread = thread_new(thread_func, (void*)&value);
-    thread_start(thread);
-    thread_join(thread);
-    thread_destroy(&thread);
+    aoc_thread_t* thread = aoc_thread_new(thread_func, (void*)&value);
+    aoc_thread_start(thread);
+    aoc_thread_join(thread);
+    aoc_thread_destroy(&thread);
 
     CHECK_EQ(value, 777);
     CHECK_EQ(thread, NULL);

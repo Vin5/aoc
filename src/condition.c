@@ -14,18 +14,18 @@
     as conditional variable, so let's try to implement it ourselves
 */
 struct _condition_t {
-    mutex_t* mutex;
+    aoc_mutex_t* mutex;
     HANDLE condition;
 };
 
 
-condition_t* condition_new(void) {
-    condition_t* self = (condition_t*) malloc(sizeof(condition_t));
+aoc_condition_t* aoc_condition_new(void) {
+    aoc_condition_t* self = (aoc_condition_t*) malloc(sizeof(aoc_condition_t));
     if(!self) {
         return NULL;
     }
 
-    self->mutex = mutex_new();
+    self->mutex = aoc_mutex_new();
     if(!self->mutex) {
         free(self);
         return NULL;
@@ -35,14 +35,14 @@ condition_t* condition_new(void) {
 }
 
 
-void condition_destroy(condition_t** condition_ptr) {
-    condition_t* self;
+void aoc_condition_destroy(aoc_condition_t** condition_ptr) {
+    aoc_condition_t* self;
 
     assert(condition_ptr);
 
     self = *condition_ptr;
     if(self) {
-        mutex_destroy(&self->mutex);
+        aoc_mutex_destroy(&self->mutex);
         if(self->condition)
             CloseHandle(self->condition);
         free(self);
@@ -51,16 +51,16 @@ void condition_destroy(condition_t** condition_ptr) {
 }
 
 
-void condition_wait(condition_t* self) {
+void condition_wait(aoc_condition_t* self) {
     assert(self);
 
-    condition_release(self);
+    aoc_condition_release(self);
     WaitForSingleObject(self->condition, INFINITE);
-    condition_acquire(self);
+    aoc_condition_acquire(self);
 }
 
 
-void condition_notify(condition_t* self) {
+void condition_notify(aoc_condition_t* self) {
     assert(self);
 
     SetEvent(self->condition);
@@ -71,17 +71,17 @@ void condition_notify(condition_t* self) {
 #include <pthread.h>
 
 struct _condition_t {
-    mutex_t* mutex;
+    aoc_mutex_t* mutex;
     pthread_cond_t condition;
 };
 
-condition_t* condition_new(void) {
-    condition_t* self = (condition_t*) malloc(sizeof(condition_t));
+aoc_condition_t* aoc_condition_new(void) {
+    aoc_condition_t* self = (aoc_condition_t*) malloc(sizeof(aoc_condition_t));
     if(!self) {
         return NULL;
     }
 
-    self->mutex = mutex_new();
+    self->mutex = aoc_mutex_new();
     if(!self->mutex) {
         free(self);
         return NULL;
@@ -92,9 +92,9 @@ condition_t* condition_new(void) {
 }
 
 
-void condition_destroy(condition_t** condition_ptr) {
+void aoc_condition_destroy(aoc_condition_t** condition_ptr) {
     int ret;
-    condition_t* self;
+    aoc_condition_t* self;
 
     assert(condition_ptr);
 
@@ -106,7 +106,7 @@ void condition_destroy(condition_t** condition_ptr) {
             ret = pthread_cond_destroy(&self->condition);
         } while(ret != 0);  // wait while another thread is waiting on condition variable
 
-        mutex_destroy(&self->mutex);
+        aoc_mutex_destroy(&self->mutex);
 
         free(self);
         *condition_ptr = NULL;
@@ -114,15 +114,15 @@ void condition_destroy(condition_t** condition_ptr) {
 }
 
 
-void condition_wait(condition_t* self) {
+void aoc_condition_wait(aoc_condition_t* self) {
     int rc;
     assert(self);
-    rc = pthread_cond_wait(&self->condition, mutex_native(self->mutex));
+    rc = pthread_cond_wait(&self->condition, aoc_mutex_native(self->mutex));
     assert(0 == rc);
 }
 
 
-void condition_notify(condition_t* self) {
+void aoc_condition_notify(aoc_condition_t* self) {
     int rc;
     assert(self);
     rc = pthread_cond_signal(&self->condition);
@@ -134,13 +134,13 @@ void condition_notify(condition_t* self) {
 #endif
 
 
-void condition_acquire(condition_t* self) {
+void aoc_condition_acquire(aoc_condition_t* self) {
     assert(self);
-    mutex_lock(self->mutex);
+    aoc_mutex_lock(self->mutex);
 }
 
 
-void condition_release(condition_t* self) {
+void aoc_condition_release(aoc_condition_t* self) {
     assert(self);
-    mutex_unlock(self->mutex);
+    aoc_mutex_unlock(self->mutex);
 }

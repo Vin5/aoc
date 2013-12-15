@@ -43,8 +43,8 @@ static void queue_node_destroy(queue_node_t** node){
     }
 }
 
-queue_t* queue_new(void) {
-    queue_t* self = (queue_t*) malloc(sizeof(queue_t));
+aoc_queue_t* aoc_queue_new(void) {
+    aoc_queue_t* self = (aoc_queue_t*) malloc(sizeof(aoc_queue_t));
     if(!self)
         return NULL;
 
@@ -56,10 +56,10 @@ queue_t* queue_new(void) {
 }
 
 
-void queue_destroy(queue_t** queue_ptr) {
+void aoc_queue_destroy(aoc_queue_t** queue_ptr) {
     queue_node_t* node;
     queue_node_t* next;
-    queue_t* self;
+    aoc_queue_t* self;
 
     assert(queue_ptr);
 
@@ -78,11 +78,11 @@ void queue_destroy(queue_t** queue_ptr) {
     }
 }
 
-bool queue_is_empty(queue_t* self) {
-    return (0 == queue_size(self));
+bool aoc_queue_is_empty(aoc_queue_t* self) {
+    return (0 == aoc_queue_size(self));
 }
 
-void queue_push(queue_t* self, void* element) {
+void aoc_queue_push(aoc_queue_t* self, void* element) {
     queue_node_t* node;
 
     assert(self);
@@ -92,7 +92,7 @@ void queue_push(queue_t* self, void* element) {
         return; // TODO can we do better?
     }
 
-    if(queue_is_empty(self)) {
+    if(aoc_queue_is_empty(self)) {
         self->head = node;
         self->tail = node;
         self->size++;
@@ -105,7 +105,7 @@ void queue_push(queue_t* self, void* element) {
     }
 }
 
-void* queue_pull(queue_t* self) {
+void* aoc_queue_pull(aoc_queue_t* self) {
     void* value;
     queue_node_t* node;
 
@@ -113,7 +113,7 @@ void* queue_pull(queue_t* self) {
 
     value = NULL;
 
-    if(queue_is_empty(self)) {
+    if(aoc_queue_is_empty(self)) {
         return NULL;
     }
 
@@ -133,7 +133,7 @@ void* queue_pull(queue_t* self) {
     return value;
 }
 
-size_t queue_size(queue_t* self) {
+size_t aoc_queue_size(aoc_queue_t* self) {
     assert(self);
     return self->size;
 }

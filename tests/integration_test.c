@@ -23,14 +23,14 @@ static void reverser(void* params) {
 
 void integration_test() {
     char message[] = "Hello world!";
-    active_t* object = active_new();
+    aoc_active_t* object = aoc_active_new();
 
     // take a series of inversions in a background thread
-    active_send(object, reverser, message, NULL); // after this call message is going to be '!dlrow olleH'
-    active_send(object, reverser, message, NULL); // message -> 'Hello world!' again
-    active_send(object, reverser, message, callback); // message -> '!dlrow olleH' finally
+    aoc_active_send(object, reverser, message, NULL); // after this call message is going to be '!dlrow olleH'
+    aoc_active_send(object, reverser, message, NULL); // message -> 'Hello world!' again
+    aoc_active_send(object, reverser, message, callback); // message -> '!dlrow olleH' finally
 
-    active_destroy(&object);
+    aoc_active_destroy(&object);
 
     CHECK_EQ(strcmp(message, "!dlrow olleH"), 0);
     CHECK_TRUE(execution_finished);
