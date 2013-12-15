@@ -15,22 +15,22 @@ void print(void* data) {
 	printf("%s", message);
 }
 
-void some_func(active_t* background_logger) {
+void some_func(aoc_active_t* background_logger) {
 	// do smth...    
 
 	// next call returns immediately
-	active_send(background_logger, print, (void*)"Message to log", NULL); // message will be logged in background
+        aoc_active_send(background_logger, print, (void*)"Message to log", NULL); // message will be logged in background
 
 	// do smth...
 }
 
 int main(int argc, char* argv[]) {
-	active_t* worker = active_new();
+        aoc_active_t* worker = aoc_active_new();
 	// ... 
 	some_func(worker);
 
 	// ...
-	active_destroy(&worker); // waits for all async tasks is finished
+        aoc_active_destroy(&worker); // waits for all async tasks is finished
 	return 0;
 }
 ```
@@ -56,23 +56,23 @@ the following manner:
 #include <active.h>
 #include <condition.h>
 
-static condition_t* finish = NULL;
+static aoc_condition_t* finish = NULL;
 
 int main(int argc, char* argv[]) {
-	active_t* worker = active_new();
-	condition = condition_new();
+        aoc_active_t* worker = aoc_active_new();
+        condition = aoc_condition_new();
 
-	active_send(worker, print, (void*)"Hello world", callback);
-	condition_acquire(finish);
-	condition_wait(finish);
-	condition_release(finish);
+        aoc_active_send(worker, print, (void*)"Hello world", callback);
+        aoc_condition_acquire(finish);
+        aoc_condition_wait(finish);
+        aoc_condition_release(finish);
 
-	condition_destroy(finish);
-	active_destroy(worker);
+        aoc_condition_destroy(finish);
+        aoc_active_destroy(worker);
 }
 
 void callback(void) {
-	condition_notify(finish);
+        aoc_condition_notify(finish);
 }
 ```
 ### Build instructions (linux)
